@@ -1,36 +1,36 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//     var mySwiper = new Swiper('.swiper-container', {
-//       direction: 'horizontal', // or 'vertical'
-//       loop: true,
-//       centeredSlides: true,
+document.addEventListener("DOMContentLoaded", function () {
+  var mySwiper = new Swiper(".swiper-container", {
+    direction: "horizontal", // or 'vertical'
+    loop: true,
+    centeredSlides: true,
 
-//       // If we need pagination
-//       pagination: {
-//         el: '.swiper-pagination',
-//         clickable: true,
-//         dynamicBullets: true,
-//       },
+    // If we need pagination
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      dynamicBullets: true,
+    },
 
-//       // Navigation arrows
-//       navigation: {
-//         nextEl: '.swiper-button-next',
-//         prevEl: '.swiper-button-prev',
-//       },
+    // Navigation arrows
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
 
-//       // Autoplay
-//       autoplay: {
-//         delay: 5000,
-//         disableOnInteraction: false,
-//       },
+    // Autoplay
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
 
-//       // Use slide or fade transition effect
-//       speed: 2000,
-//       effect: 'fade',
-//       fadeEffect: {
-//             crossFade: true,
-//        },
-//     });
-//   });
+    // Use slide or fade transition effect
+    speed: 2000,
+    effect: "fade",
+    fadeEffect: {
+      crossFade: true,
+    },
+  });
+});
 
 // init Isotope
 let $grid = $(".grid").isotope({
@@ -77,27 +77,57 @@ function renderUI(item) {
 }
 
 function renderBasket(basketItems) {
+  basketItemsList.innerHTML = "";
   for (let i = 0; i < basketItems.length; i++) {
-    basketItemsList +=`
+    basketItemsList.innerHTML += `
       <tr>
       <th scope="row"><img src="${basketItems[i].img}" alt="" width="50px" height="60px"></th>
       <td>${basketItems[i].name}</td>
       <td>$259</td>
-      <td><button style="border: none; color: #f34f3f;"><i class="fa-regular fa-trash-can"></i> </button></td>
+      <td><button style="border: none; color: #f34f3f;" onclick="removeFromBasket(${basketItems[i].id}) "><i class="fa-regular fa-trash-can"></i> </button></td>
     </tr>
       `;
   }
 }
-console.log(flowers);
 
 function addToBasket(id) {
   fetch("./api.json")
     .then((resp) => resp.json())
     .then((data) => {
-        const target = data.find((flowers) => flowers.id == id);
-        flowers.push(target);
-        renderBasket(basketItems);
-        console.log(flowers);
+      const target = data.find((flowers) => flowers.id == id);
+      flowers.push(target);
+      localStorage.setItem("flowers", JSON.stringify(flowers));
+      renderBasket(flowers);
+      flowersLenghtNum();
     });
-  
 }
+renderBasket(flowers);
+
+function removeFromBasket(id) {
+  fetch("./api.json")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const target = data.find((flowers) => flowers.id == id);
+      const indexOfTarget = flowers.indexOf(target);
+
+      flowers.splice(indexOfTarget, 1);
+
+      localStorage.setItem("flowers", JSON.stringify(flowers));
+      console.log(flowers);
+      renderBasket(flowers);
+      flowersLenghtNum();
+    });
+}
+
+const flowersLenght = document.querySelector(".flowersLenght");
+
+function flowersLenghtNum() {
+  let sum = 0;
+  for (let i = 0; i < flowers.length; i++) {
+    sum += flowers[i].price;
+  }
+
+  flowersLenght.innerHTML = `Card($${sum})`;
+}
+
+flowersLenghtNum();
