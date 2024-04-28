@@ -88,13 +88,13 @@ header {
     background: transparent no-repeat 50% 50% /cover;
 }
 
-body {
-    text-align: center;
-}
+
 
 .main_yazi {
     text-align: start;
 }
+
+
 
 .ilk h4 {
     font-family: "Playfair Display", serif;
@@ -203,8 +203,9 @@ footer {
     align-items: flex-start;
     justify-content: space-around;
     gap: 40px;
-    padding-top: 30px;
-    padding: 50px 40px;
+    /* padding-top: 30px; */
+    padding: 50px 50px;
+    text-align: start;
 
 }
 
@@ -237,10 +238,15 @@ footer {
     font-size: 12px;
     line-height: 2em;
     font-weight: 500;
-    letter-spacing: .1em;
     text-transform: uppercase;
 }
 
+.footer_frst_card {
+    text-align: start;
+}
+
+
+    
 
 .footer_frst_card li {
     font-size: 15px;
@@ -358,3 +364,5 @@ footer {
 .inner_grid_card {
     height: 908px;
 }
+
+
